@@ -1,0 +1,69 @@
+{% extends "home/layout.html" %}
+{% block body %}
+<style>
+
+
+
+.nav-wrapper {
+	display: flex;
+	position: relative;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	align-items: center;
+	justify-content: space-between;
+	margin: auto;
+	width: 90%;
+	height: 80px;
+	border-radius: 0 0 15px 15px;
+	padding: 0 25px;
+	z-index: 2;
+	background: #fff;
+	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+.logo-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.logo {
+	height: 60px;
+}
+
+.nav-tabs {
+	display: flex;
+	font-weight: 600;
+	font-size: 18px;
+	list-style: none;
+}
+
+
+
+.nav-tab {
+	cursor: pointer;
+}
+
+
+
+
+
+</style>
+
+<div class="nav-wrapper">
+    <div class="logo-container">
+        <img class="logo" src="" alt="Logo">
+    </div>
+    <nav>
+        <div class="nav-container">
+            <ul class="nav-tabs">
+                <li class="nav-tab">Home</li>
+                <li class="nav-tab">Add Events</li>
+                <li class="nav-tab">Contact</li>
+            </ul>
+        </div>
+    </nav>
+</div>
+</header>
+
+{% endblock %}
