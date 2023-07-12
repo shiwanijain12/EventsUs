@@ -18,3 +18,23 @@ class Client(models.Model):
 
     def __str__(self):
         return self.name
+    
+class Event(models.Model):
+    CATEGORY=(
+        ('Concerts', 'Concerts'),
+        ('Classes & Workshops', 'Classes & Workshops'),
+        ('Corporate Events', 'Corporate Events'),
+        ('Festivals & Fairs', 'Festivals & Fairs'),
+    )
+
+
+    event_name = models.CharField(max_length=200, null=True)
+    name_of_organizer= models.ForeignKey(Organizer, null=True, on_delete= models.SET_NULL)
+    category= models.CharField(max_length=200, null=True, choices=CATEGORY)
+    place_of_event = models.CharField(max_length=200, null=True)
+    description= models.CharField(max_length=200, null=True, blank=True)
+    date_created= models.DateTimeField(auto_now_add=True, null=True)
+
+    def __str__(self):
+        return self.event_name
+    
