@@ -1,11 +1,14 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
-from .forms import CreateUserForm
+from .forms import *
 
 # Create your views here.
 def home(request):
     return render(request,'home/navbar.html')
+
+def payment(request):
+    return render(request,'home/payment.html')
 
 def registerPage(request):
     if request.user.is_authenticated:
@@ -43,4 +46,18 @@ def loginPage(request):
 def logoutUser(request):
     logout(request)
     return redirect('login')
+
+def createEvent(request,pk):
+    form= CreateEvent()
+    organizer= Organizer.objects.get(id=pk)
+
+    if request.method=='POST':
+        form= CreateEvent(request.POST, instance=organizer)
+        if form.is_valid():
+            form.save()
+            return redirect('/')
+        
+    context={'form': form}
+    return render(request, 'home/create_event.html', context)
+
 

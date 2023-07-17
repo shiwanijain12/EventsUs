@@ -1,0 +1,17 @@
+{% extends "home/layout.html" %}
+
+{% block content %}
+{% include "home/navbar.html" %}
+
+<form action="" method="POST">
+    {% csrf_token %}
+    {{form}}
+    <hr>
+
+
+    <input type="submit" name="Submit">
+</form>
+
+
+
+{% endblock %}

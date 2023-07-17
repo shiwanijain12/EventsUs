@@ -33,6 +33,7 @@ class Event(models.Model):
     category= models.CharField(max_length=200, null=True, choices=CATEGORY)
     place_of_event = models.CharField(max_length=200, null=True)
     description= models.CharField(max_length=200, null=True, blank=True)
+    price=models.IntegerField(null=True)
     date_created= models.DateTimeField(auto_now_add=True, null=True)
 
     def __str__(self):
