@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
 class Organizer(models.Model):
@@ -19,23 +20,28 @@ class Client(models.Model):
     def __str__(self):
         return self.name
     
+    
+
 class Event(models.Model):
-    CATEGORY=(
+    CATEGORY_CHOICES = (
         ('Concerts', 'Concerts'),
         ('Classes & Workshops', 'Classes & Workshops'),
         ('Corporate Events', 'Corporate Events'),
         ('Festivals & Fairs', 'Festivals & Fairs'),
     )
 
-
-    event_name = models.CharField(max_length=200, null=True)
-    name_of_organizer= models.ForeignKey(Organizer, null=True, on_delete= models.SET_NULL)
-    category= models.CharField(max_length=200, null=True, choices=CATEGORY)
-    place_of_event = models.CharField(max_length=200, null=True)
-    description= models.CharField(max_length=200, null=True, blank=True)
-    price=models.IntegerField(null=True)
-    date_created= models.DateTimeField(auto_now_add=True, null=True)
+    title = models.CharField(max_length=200)
+    description = models.TextField()
+    category = models.CharField(max_length=20, choices=CATEGORY_CHOICES)
+    start_date = models.DateTimeField()
+    end_date = models.DateTimeField()
 
     def __str__(self):
-        return self.event_name
+        return self.title
+
+class EventRegistration(models.Model):
+    event = models.ForeignKey(Event, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    is_paid = models.BooleanField(default=False)
+    registration_date = models.DateTimeField(auto_now_add=True)
     

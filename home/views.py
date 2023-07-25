@@ -1,9 +1,34 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect,get_object_or_404
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from .forms import *
+from .models import Event, EventRegistration
+from django.utils import timezone
 
-# Create your views here.
+def event_list(request):
+    upcoming_events = Event.objects.filter(start_date__gte=timezone.now())
+    past_events = Event.objects.filter(end_date__lt=timezone.now())
+    return render(request, 'events/event_list.html', {'upcoming_events': upcoming_events, 'past_events': past_events})
+
+def event_detail(request, event_id):
+    event = Event.objects.get(id=event_id)
+    registered_users = EventRegistration.objects.filter(event=event)
+    paid_users = registered_users.filter(is_paid=True)
+    unpaid_users = registered_users.filter(is_paid=False)
+    return render(request, 'events/event_detail.html', {'event': event, 'registered_users': registered_users, 'paid_users': paid_users, 'unpaid_users': unpaid_users})
+
+
+def event_registration(request, event_id):
+    event = get_object_or_404(Event, id=event_id)
+    
+    if request.method == 'POST':
+        is_paid = request.POST.get('is_paid', False)
+        user = request.user
+        EventRegistration.objects.create(event=event, user=user, is_paid=is_paid)
+        return redirect('event_detail', event_id=event.id)
+
+    return render(request, 'events/event_registration.html', {'event': event})
+
 def home(request):
     return render(request,'home/navbar.html')
 
@@ -11,9 +36,9 @@ def payment(request):
     return render(request,'home/payment.html')
 
 def registerPage(request):
-    if request.user.is_authenticated:
-        return redirect('home')
-    else:
+   # if request.user.is_authenticated:
+      #  return redirect('home')
+   # else:
         form= CreateUserForm()
         if request.method=='POST':
             form= CreateUserForm(request.POST)
@@ -26,9 +51,9 @@ def registerPage(request):
         return render(request, 'home/register.html', context)
     
 def loginPage(request):
-    if request.user.is_authenticated:
-        return redirect('home')
-    else:
+   # if request.user.is_authenticated:
+       # return redirect('home')
+   # else:
         if request.method =='POST':
             username= request.POST.get('username')
             password= request.POST.get('password')
@@ -47,9 +72,10 @@ def logoutUser(request):
     logout(request)
     return redirect('login')
 
-def createEvent(request,pk):
+#def createEvent(request,pk):
     form= CreateEvent()
     organizer= Organizer.objects.get(id=pk)
+
 
     if request.method=='POST':
         form= CreateEvent(request.POST, instance=organizer)
@@ -57,7 +83,8 @@ def createEvent(request,pk):
             form.save()
             return redirect('/')
         
-    context={'form': form}
+    context={'form': form,'organizer':organizer}
     return render(request, 'home/create_event.html', context)
+
 
 
