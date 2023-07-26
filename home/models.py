@@ -30,11 +30,11 @@ class Event(models.Model):
         ('Festivals & Fairs', 'Festivals & Fairs'),
     )
 
-    title = models.CharField(max_length=200)
-    description = models.TextField()
-    category = models.CharField(max_length=20, choices=CATEGORY_CHOICES)
-    start_date = models.DateTimeField()
-    end_date = models.DateTimeField()
+    title = models.CharField(max_length=200, null=True, blank=True)
+    description = models.TextField(max_length=200, null=True)
+    category = models.CharField(max_length=20, choices=CATEGORY_CHOICES,null=True)
+    start_date = models.DateTimeField(null= True)
+    end_date = models.DateTimeField(null=True)
 
     def __str__(self):
         return self.title
@@ -42,6 +42,6 @@ class Event(models.Model):
 class EventRegistration(models.Model):
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    is_paid = models.BooleanField(default=False)
-    registration_date = models.DateTimeField(auto_now_add=True)
+    is_paid = models.BooleanField(default=False, null=True)
+    registration_date = models.DateTimeField(auto_now_add=True, null=True)
     
