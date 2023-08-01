@@ -1,0 +1,160 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Client Registration</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h2>Client Registration</h2>
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="id_username">Username:</label>
+                {{ form.username }}
+            </div>
+            <div class="form-group">
+                <label for="id_email">Email:</label>
+                {{ form.email }}
+            </div>
+            <div class="form-group">
+                <label for="id_password1">Password:</label>
+                {{ form.password1 }}
+            </div>
+            <div class="form-group">
+                <label for="id_password2">Confirm Password:</label>
+                {{ form.password2 }}
+            </div>
+            <button type="submit">Register</button>
+            <div class="signin">
+              <p>Already have an account? <a href="{% url 'login' %}">Login</a>.</p>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
+
+<!-- <!DOCTYPE html> -->
+<!-- <html> -->
+    
+<!-- <style> -->
+
+
+
+
+<!-- .container { 
+  padding: 16px;
+}
+
+
+ .input {  
+  width: 100%;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  display: inline-block;
+  border: none;
+  background: #f1f1f1;
+}
+
+/* .input:focus { 
+  background-color: #ddd;
+outline: none;
+}*/
+
+
+hr {
+  border: 1px solid #f1f1f1;
+  margin-bottom: 25px;
+}
+
+
+.registerbtn {
+  background-color: #04AA6D;
+  color: white;
+  padding: 16px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  opacity: 0.9;
+}
+
+.registerbtn:hover {
+  opacity:1;
+}
+
+
+a {
+  color: dodgerblue;
+}
+
+
+.signin {
+  background-color: #f1f1f1;
+  text-align: center;
+}
+</style>
+
+<form action="action_page.php">
+  {% csrf_token %}
+    <div class="container">
+      <h1>Register</h1>
+      <hr>
+
+       <label for="username" type="text" placeholder="Enter Username" name="username" id="username" required><b>{{form.username}}</b></label> -->
+      <!-- <input type="text" placeholder="Enter Username" name="username" id="username" required> -->
+  
+      <!-- <label for="email" type="text" placeholder="Enter Email" name="email" id="email" required><b>{{form.email}}</b></label> -->
+      <!-- <input type="text" placeholder="Enter Email" name="email" id="email" required> -->
+  
+      <!-- <label for="psw" type="password" placeholder="Enter Password" name="psw" id="psw" required><b>{{form.password1}}</b></label> -->
+      <!-- <input type="password" placeholder="Enter Password" name="psw" id="psw" required> -->
+  
+      <!-- <label for="psw-repeat" ><b>{{form.password2}}</b></label>  -->
+      <!-- <input type="password" placeholder="Repeat Password" name="psw-repeat" id="psw-repeat" required> -->
+
+      <!-- <div class="input"> -->
+        <!-- {{form.username}} -->
+      <!-- </div> -->
+
+      <!-- <div class="input"> -->
+        <!-- {{form.email}} -->
+      <!-- </div> -->
+
+      <!-- <div class="input"> -->
+        <!-- {{form.password1}} -->
+      <!-- </div> -->
+
+      <!-- <div class="input"> -->
+        <!-- {{form.password2}} -->
+      <!-- </div> -->
+      <!-- <hr> -->
+  
+      
+      <!-- <button type="submit" class="registerbtn">Register</button> -->
+    <!-- </div> -->
+
+    <!-- {{form.errors}} -->
+  
+    <!-- <div class="container signin"> -->
+      <!-- <p>Already have an account? <a href="{% url 'login' %}">Login</a>.</p> -->
+    <!-- </div> -->
+  <!-- </form>  -->
+
+  <!-- <script> -->
+    <!-- var form_fields = document.getElementsByTagName('input') -->
+    <!-- form_fields[1].placeholder='Username'; -->
+    <!-- form_fields[2].placeholder='Email'; -->
+    <!-- form_fields[3].placeholder='Enter password'; -->
+    <!-- form_fields[4].placeholder='Re-enter Password'; -->
+  
+  
+    <!-- for (var field in form_fields){	 -->
+      <!-- form_fields[field].className += ' form-control' -->
+    <!-- } -->
+  <!-- </script> -->
+
+
+<!-- </html> -->

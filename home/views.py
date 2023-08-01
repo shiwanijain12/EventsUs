@@ -5,29 +5,48 @@ from .forms import *
 from .models import Event, EventRegistration
 from django.utils import timezone
 
+
 def event_list(request):
     upcoming_events = Event.objects.filter(start_date__gte=timezone.now())
     past_events = Event.objects.filter(end_date__lt=timezone.now())
-    return render(request, 'events/event_list.html', {'upcoming_events': upcoming_events, 'past_events': past_events})
+    return render(request, 'home/event_list.html', {'upcoming_events': upcoming_events, 'past_events': past_events})
 
 def event_detail(request, event_id):
     event = Event.objects.get(id=event_id)
     registered_users = EventRegistration.objects.filter(event=event)
     paid_users = registered_users.filter(is_paid=True)
     unpaid_users = registered_users.filter(is_paid=False)
-    return render(request, 'events/event_detail.html', {'event': event, 'registered_users': registered_users, 'paid_users': paid_users, 'unpaid_users': unpaid_users})
+    return render(request, 'home/event_detail.html', {'event': event, 'registered_users': registered_users, 'paid_users': paid_users, 'unpaid_users': unpaid_users})
 
+
+#def event_registration(request, event_id):
+    #event = get_object_or_404(Event, id=event_id)
+    
+    #if request.method == 'POST':
+        #is_paid = request.POST.get('is_paid', False)
+        #user = request.user
+        #EventRegistration.objects.create(event=event, user=user, is_paid=is_paid)
+        #return redirect('event_detail', event_id=event.id)
+
+    #return render(request, 'home/event_registration.html', {'event': event})
 
 def event_registration(request, event_id):
     event = get_object_or_404(Event, id=event_id)
     
     if request.method == 'POST':
-        is_paid = request.POST.get('is_paid', False)
-        user = request.user
-        EventRegistration.objects.create(event=event, user=user, is_paid=is_paid)
-        return redirect('event_detail', event_id=event.id)
+        form = EventRegistrationForm(request.POST)
+        if form.is_valid():
+            full_name = form.cleaned_data['full_name']
+            email = form.cleaned_data['email']
+            is_paid = form.cleaned_data['is_paid']
+             
+            
+            EventRegistration.objects.create(event=event, full_name=full_name, email=email, is_paid=is_paid)
+            return redirect('event_detail', event_id=event.id)
+    else:
+        form = EventRegistrationForm()
 
-    return render(request, 'events/event_registration.html', {'event': event})
+    return render(request, 'home/event_registration.html', {'event': event, 'form': form})
 
 def home(request):
     return render(request,'home/navbar.html')
@@ -35,25 +54,54 @@ def home(request):
 def payment(request):
     return render(request,'home/payment.html')
 
-def registerPage(request):
-   # if request.user.is_authenticated:
-      #  return redirect('home')
-   # else:
-        form= CreateUserForm()
-        if request.method=='POST':
-            form= CreateUserForm(request.POST)
+
+def organizer_registration(request):
+    if request.user.is_authenticated:
+       return redirect('home')
+    else:
+        if request.method == 'POST':
+            form = OrganizerRegistrationForm(request.POST)
             if form.is_valid():
-                form.save()
-                user= form.cleaned_data.get('username')
-                messages.success(request, 'Account was created for '+ user)
+                user = form.save()
+                Organizer.objects.create(user=user)
                 return redirect('login')
-        context={'form':form}
-        return render(request, 'home/register.html', context)
+        else:
+            form = OrganizerRegistrationForm()
+        return render(request, 'home/organizer_registration.html', {'form': form})
+
+def client_registration(request):
+    if request.user.is_authenticated:
+       return redirect('home')
+    else:
+        if request.method == 'POST':
+            form = ClientRegistrationForm(request.POST)
+            if form.is_valid():
+                user = form.save()
+                Client.objects.create(user=user)
+                return redirect('login')
+        else:
+            form = ClientRegistrationForm()
+        return render(request, 'home/client_registration.html', {'form': form})
+
+#def registerPage(request):
+   #if request.user.is_authenticated:
+      #return redirect('home')
+   #else:
+       # form= CreateUserForm()
+        #if request.method=='POST':
+           # form= CreateUserForm(request.POST)
+           # if form.is_valid():
+               # form.save()
+               # user= form.cleaned_data.get('username')
+               # messages.success(request, 'Account was created for '+ user)
+               # return redirect('login')
+        #context={'form':form}
+        #return render(request, 'home/register.html', context)
     
 def loginPage(request):
-   # if request.user.is_authenticated:
-       # return redirect('home')
-   # else:
+   if request.user.is_authenticated:
+       return redirect('home')
+   else:
         if request.method =='POST':
             username= request.POST.get('username')
             password= request.POST.get('password')
@@ -73,18 +121,46 @@ def logoutUser(request):
     return redirect('login')
 
 #def createEvent(request,pk):
-    form= CreateEvent()
-    organizer= Organizer.objects.get(id=pk)
+    #form= CreateEvent()
+   # organizer= Organizer.objects.get(id=pk)
 
 
-    if request.method=='POST':
-        form= CreateEvent(request.POST, instance=organizer)
+   # if request.method=='POST':
+        #form= CreateEvent(request.POST, instance=organizer)
+        #if form.is_valid():
+            #form.save()
+            #return redirect('/')
+        
+   # context={'form': form,'organizer':organizer}
+   # return render(request, 'home/create_event.html', context)
+
+def create_event(request):
+    if request.method == 'POST':
+        form = EventCreationForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('/')
-        
-    context={'form': form,'organizer':organizer}
-    return render(request, 'home/create_event.html', context)
+            return redirect('event_list') 
+    else:
+        form = EventCreationForm()
+
+    return render(request, 'home/create_event.html', {'form': form})
 
 
+def event_feedback(request, event_id):
+    event = get_object_or_404(Event, id=event_id)
+
+    if request.method == 'POST':
+        form = EventFeedbackForm(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data['name']
+            email = form.cleaned_data['email']
+            rating = form.cleaned_data['rating']
+            feedback = form.cleaned_data['feedback']
+
+            EventFeedback.objects.create(event=event, name=name, email=email, rating=rating, feedback=feedback)
+            return render(request, 'home/feedback_success.html', {'event': event})
+    else:
+        form = EventFeedbackForm()
+
+    return render(request, 'home/feedback.html', {'event': event, 'form': form})
 

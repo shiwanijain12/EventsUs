@@ -13,7 +13,7 @@
 <h2>Register for Event</h2>
 <form method="post" action="{% url 'event_registration' event.id %}">
   {% csrf_token %}
-  <label for="is_paid">Paid Registration:</label>
-  <input type="checkbox" name="is_paid">
+  <!-- <label for="is_paid">Paid Registration:</label> -->
+  <!-- <input type="checkbox" name="is_paid"> -->
   <input type="submit" value="Register">
 </form>
