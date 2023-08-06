@@ -1,14 +1,15 @@
-
+{% load static %}
 
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Event Registration</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'home/css/event_registration.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/event_registration.css' %}">
 </head>
 <body>
     <h1>Event Registration - {{ event.title }}</h1>
-    <form method="post">
+    <form method="POST">
         {% csrf_token %}
         <label for="full_name">Full Name:</label>
         <input type="text" name="full_name" required>

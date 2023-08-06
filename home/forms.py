@@ -33,10 +33,10 @@ class ClientRegistrationForm(UserCreationForm):
         fields = ('username', 'email', 'password1', 'password2')
 
 
-class EventRegistrationForm(forms.Form):
-    full_name = forms.CharField(max_length=100, label='Full Name')
-    email = forms.EmailField(label='Email')
-    is_paid = forms.BooleanField(required=False, label='Paid Registration')
+class EventRegistrationForm(forms.ModelForm):
+    class Meta:
+        model = EventRegistration
+        fields = ('event','user', 'email')
 
 
 class EventCreationForm(forms.ModelForm):

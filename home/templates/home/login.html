@@ -59,7 +59,7 @@ a {
 }
 </style>
 
-<form action="action_page.php">
+<form method= "POST">
   {% csrf_token %}
     <div class="container">
       <h1>Login</h1>
@@ -81,7 +81,7 @@ a {
     {% for message in messages %}
 				<p id="messages">{{message}}</p>
 
-			{% endfor %}
+		{% endfor %}
   
     <div class="container signin">
       <p>Don't have an account? <a href="{% url 'client_registration' %}">Register as a client</a> or <a href="{% url 'organizer_registration' %}">Register as an organizer</a></a></p>

@@ -10,6 +10,15 @@
 <p>Paid Users: {{ paid_users.count }}</p>
 <p>Unpaid Users: {{ unpaid_users.count }}</p>
 
+<h2>Add feedback for Event</h2>
+<form method="post" action="{% url 'event_feedback' event.id %}">
+  {% csrf_token %}
+  <!-- <label for="is_paid">Paid Registration:</label> -->
+  <!-- <input type="checkbox" name="is_paid"> -->
+  <input type="submit" value="Add Feedback">
+</form>
+
+
 <h2>Register for Event</h2>
 <form method="post" action="{% url 'event_registration' event.id %}">
   {% csrf_token %}

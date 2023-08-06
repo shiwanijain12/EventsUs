@@ -46,8 +46,12 @@ class Event(models.Model):
 class EventRegistration(models.Model):
     event = models.ForeignKey(Event, on_delete=models.SET_NULL, null=True)
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    email = models.EmailField(null=True)
     is_paid = models.BooleanField(default=False, null=True)
     registration_date = models.DateTimeField(auto_now_add=True, null=True)
+
+    def __str__(self):
+        return f"Registration for {self.event.title} by {self.user}"
 
 
 class EventFeedback(models.Model):

@@ -4,19 +4,23 @@ from django.contrib.auth import authenticate, login, logout
 from .forms import *
 from .models import Event, EventRegistration
 from django.utils import timezone
+from django.contrib.auth.decorators import login_required
 
-
+#@login_required(login_url='login')
 def event_list(request):
     upcoming_events = Event.objects.filter(start_date__gte=timezone.now())
     past_events = Event.objects.filter(end_date__lt=timezone.now())
-    return render(request, 'home/event_list.html', {'upcoming_events': upcoming_events, 'past_events': past_events})
-
+    upcoming_count= upcoming_events.count()
+    past_count= past_events.count()
+    return render(request, 'home/event_list.html', {'upcoming_events': upcoming_events, 'past_events': past_events, 'upcoming_count':upcoming_count, 'past_count':past_count})
+#@login_required(login_url='login')
 def event_detail(request, event_id):
+    events= Event.objects.all()
     event = Event.objects.get(id=event_id)
     registered_users = EventRegistration.objects.filter(event=event)
     paid_users = registered_users.filter(is_paid=True)
     unpaid_users = registered_users.filter(is_paid=False)
-    return render(request, 'home/event_detail.html', {'event': event, 'registered_users': registered_users, 'paid_users': paid_users, 'unpaid_users': unpaid_users})
+    return render(request, 'home/event_detail.html', {'event': event, 'registered_users': registered_users, 'paid_users': paid_users, 'unpaid_users': unpaid_users, 'events':events})
 
 
 #def event_registration(request, event_id):
@@ -29,28 +33,36 @@ def event_detail(request, event_id):
         #return redirect('event_detail', event_id=event.id)
 
     #return render(request, 'home/event_registration.html', {'event': event})
-
+#@login_required(login_url='login')
 def event_registration(request, event_id):
     event = get_object_or_404(Event, id=event_id)
     
     if request.method == 'POST':
         form = EventRegistrationForm(request.POST)
         if form.is_valid():
-            full_name = form.cleaned_data['full_name']
+            event = form.cleaned_data['event']
+            user = form.cleaned_data['user']
             email = form.cleaned_data['email']
-            is_paid = form.cleaned_data['is_paid']
-             
             
-            EventRegistration.objects.create(event=event, full_name=full_name, email=email, is_paid=is_paid)
-            return redirect('event_detail', event_id=event.id)
+            
+        
+            EventRegistration.objects.create(event=event, user=user, email=email)
+            return redirect('event_detail', event= event)
     else:
         form = EventRegistrationForm()
 
     return render(request, 'home/event_registration.html', {'event': event, 'form': form})
-
+#@login_required(login_url='login')
 def home(request):
-    return render(request,'home/navbar.html')
+    events= Event.objects.all()
+    total_events= events.count()
+    upcoming_events = Event.objects.filter(start_date__gte=timezone.now())
+    past_events = Event.objects.filter(end_date__lt=timezone.now())
+    upcoming_count= upcoming_events.count()
+    past_count= past_events.count()
+    return render(request,'home/dashboard.html', {'upcoming_events': upcoming_events, 'past_events': past_events, 'upcoming_count':upcoming_count, 'past_count':past_count, 'events':events, 'total_events': total_events})
 
+#@login_required(login_url='login')
 def payment(request):
     return render(request,'home/payment.html')
 
@@ -64,6 +76,7 @@ def organizer_registration(request):
             if form.is_valid():
                 user = form.save()
                 Organizer.objects.create(user=user)
+                messages.success(request, 'Account was created ')
                 return redirect('login')
         else:
             form = OrganizerRegistrationForm()
@@ -78,6 +91,7 @@ def client_registration(request):
             if form.is_valid():
                 user = form.save()
                 Client.objects.create(user=user)
+                messages.success(request, 'Account was created')
                 return redirect('login')
         else:
             form = ClientRegistrationForm()
@@ -133,7 +147,7 @@ def logoutUser(request):
         
    # context={'form': form,'organizer':organizer}
    # return render(request, 'home/create_event.html', context)
-
+#@login_required(login_url='login')
 def create_event(request):
     if request.method == 'POST':
         form = EventCreationForm(request.POST)
@@ -146,6 +160,7 @@ def create_event(request):
     return render(request, 'home/create_event.html', {'form': form})
 
 
+#@login_required(login_url='login')
 def event_feedback(request, event_id):
     event = get_object_or_404(Event, id=event_id)
 

@@ -1,11 +1,144 @@
-{% extends "home/layout.html" %}
+{% load static %}
+<!DOCTYPE html>
+<html>
 
-{% block content %}
-{% include "home/navbar.html" %}
-
-
-
+<style>
 
 
 
-{% endblock %}
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f1f1f1;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 0;
+    text-align: center;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin-right: 20px;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+h1, h2, h3 {
+    margin-bottom: 10px;
+}
+
+.filter-section {
+    margin-bottom: 20px;
+}
+
+.filter-section label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.event-list ul {
+    list-style: none;
+    padding: 0;
+}
+
+.event-list ul li {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #f9f9f9;
+}
+
+.event-list ul li h3 {
+    margin-top: 0;
+}
+
+input[type="submit"] {
+    padding: 5px 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+input[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+</style>
+<head>
+    <title>EventsUs Home</title>
+    <!-- <link rel="stylesheet" type="text/css" href="{% static 'home/css/home.css' %}"> -->
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'event_list' %}">Event List</a></li>
+                <li><a href="{% url 'create_event' %}">Create Event</a></li>
+                
+            </ul>
+        </nav>
+    </header>
+    
+    <div class="container">
+        <h1>Welcome to the EventsUs Portal</h1>
+        <p>Explore and manage events.</p>
+        
+        <div class="filter-section">
+            <h2>Filter Events</h2>
+            <form>
+                <label for="category">Category:</label>
+                <select name="category">
+                    <option value="">All Categories</option>
+                    <option value="Concerts">Concerts</option>
+                    <option value="Classes & Workshops">Classes & Workshops</option>
+                    <option value="Corporate Events">Corporate Events</option>
+                    <option value="Festivals & Fairs">Festivals & Fairs</option>
+                    
+                </select>
+                <br>
+                <br>
+                <input type="submit" value="Apply Filter">
+            </form>
+        </div>
+        
+        <div class="event-list">
+            <!-- <h2>Upcoming Events</h2> -->
+            <h2>Total Events: {{ total_events }}</h2>
+            
+            <ul>
+                {% for event in events %}
+                <li>
+                    <h3><a href="{% url 'event_detail' event.id %}">{{ event.title }}</a></h3>
+                    <p>{{ event.description }}</p>
+                    <p>Event start date : {{ event.start_date }}</p>
+                    <p>Event end date : {{ event.end_date }}</p>
+                    <p>Category: {{ event.category }}</p>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
