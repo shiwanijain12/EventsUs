@@ -1,0 +1,53 @@
+
+
+.event-detail-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.event-title {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.event-info {
+    margin-bottom: 20px;
+}
+
+.event-info p {
+    margin: 0;
+}
+
+.event-info .info-label {
+    font-weight: bold;
+}
+
+.event-info .info-value {
+    margin-left: 5px;
+}
+
+.registration-form {
+    
+    margin-top: 20px;
+}
+
+.registration-form label,
+.registration-form input[type="submit"] {
+    background-color: #7eb6f1;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.registration-form input[type="text"],
+.registration-form input[type="email"] {
+    width: 100%;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+

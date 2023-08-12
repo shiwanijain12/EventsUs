@@ -26,26 +26,33 @@
 </head>
 <body>
     <div class="event-list-container">
-        <h1>Upcoming Events</h1>
         
-        <div class="event-filters">
-            <h2>Filter Events</h2>
-            <form method="get">
-                <label for="category">Category:</label>
-                <select name="category">
-                    <option value="">All Categories</option>
-                    <option value="Concerts">Concerts</option>
-                    <option value="Classes & Workshops">Classes & Workshops</option>
-                    <option value="Corporate Events">Corporate Events</option>
-                    <option value="Festivals & Fairs">Festivals & Fairs</option>
-                </select>
-                <br>
-                <input type="submit" value="Apply Filter">
-            </form>
-        </div>
+        
+        <!-- <div class="event-filters"> -->
+            <!-- <h2>Filter Events</h2> -->
+            <!-- <form method="get"> -->
+              <!-- {{myFilter.form}} -->
+              <!-- <br> -->
+          <!-- <button type="submit">Search</button> -->
+          <!-- </form> -->
+        <!-- </div> -->
         
         <ul class="event-list">
-            {% for event in events %}
+          <h1>Upcoming Events</h1>
+            {% for event in upcoming_events %}
+            <li class="event-item">
+                <h2>{{ event.title }}</h2>
+                <p class="event-date">Date: {{ event.start_date }} - {{ event.end_date }}</p>
+                <p class="event-category">Category: {{ event.category }}</p>
+                <p>{{ event.description }}</p>
+                <a href="{% url 'event_detail' event.id %}">View Details</a>
+            </li>
+            {% endfor %}
+        </ul>
+
+        <ul class="event-list">
+          <h1>Past Events</h1>
+            {% for event in past_events %}
             <li class="event-item">
                 <h2>{{ event.title }}</h2>
                 <p class="event-date">Date: {{ event.start_date }} - {{ event.end_date }}</p>

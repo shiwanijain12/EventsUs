@@ -107,19 +107,10 @@ input[type="submit"]:hover {
         
         <div class="filter-section">
             <h2>Filter Events</h2>
-            <form>
-                <label for="category">Category:</label>
-                <select name="category">
-                    <option value="">All Categories</option>
-                    <option value="Concerts">Concerts</option>
-                    <option value="Classes & Workshops">Classes & Workshops</option>
-                    <option value="Corporate Events">Corporate Events</option>
-                    <option value="Festivals & Fairs">Festivals & Fairs</option>
-                    
-                </select>
+            <form method="get">
+                {{myFilter.form}}
                 <br>
-                <br>
-                <input type="submit" value="Apply Filter">
+            <button type="submit">Search</button>
             </form>
         </div>
         

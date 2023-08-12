@@ -5,14 +5,18 @@ from .forms import *
 from .models import Event, EventRegistration
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
+from .filters import EventFilter
 
 #@login_required(login_url='login')
 def event_list(request):
+    events= Event.objects.all()
     upcoming_events = Event.objects.filter(start_date__gte=timezone.now())
     past_events = Event.objects.filter(end_date__lt=timezone.now())
     upcoming_count= upcoming_events.count()
     past_count= past_events.count()
-    return render(request, 'home/event_list.html', {'upcoming_events': upcoming_events, 'past_events': past_events, 'upcoming_count':upcoming_count, 'past_count':past_count})
+    myFilter=EventFilter(request.GET, queryset=events)
+    events= myFilter.qs
+    return render(request, 'home/event_list.html', {'upcoming_events': upcoming_events, 'past_events': past_events, 'upcoming_count':upcoming_count, 'past_count':past_count, 'myFilter':myFilter,'events':events})
 #@login_required(login_url='login')
 def event_detail(request, event_id):
     events= Event.objects.all()
@@ -60,7 +64,9 @@ def home(request):
     past_events = Event.objects.filter(end_date__lt=timezone.now())
     upcoming_count= upcoming_events.count()
     past_count= past_events.count()
-    return render(request,'home/dashboard.html', {'upcoming_events': upcoming_events, 'past_events': past_events, 'upcoming_count':upcoming_count, 'past_count':past_count, 'events':events, 'total_events': total_events})
+    myFilter=EventFilter(request.GET, queryset=events)
+    events= myFilter.qs
+    return render(request,'home/dashboard.html', {'upcoming_events': upcoming_events, 'past_events': past_events, 'upcoming_count':upcoming_count, 'past_count':past_count, 'events':events, 'total_events': total_events, 'myFilter':myFilter})
 
 #@login_required(login_url='login')
 def payment(request):

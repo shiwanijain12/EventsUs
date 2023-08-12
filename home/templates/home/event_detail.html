@@ -1,28 +1,77 @@
 
 
-<h1>{{ event.title }}</h1>
-<p>{{ event.description }}</p>
-<p>Start Date: {{ event.start_date }}</p>
-<p>End Date: {{ event.end_date }}</p>
+<!-- <h1>{{ event.title }}</h1> -->
+<!-- <p>{{ event.description }}</p> -->
+<!-- <p>Start Date: {{ event.start_date }}</p> -->
+<!-- <p>End Date: {{ event.end_date }}</p> -->
 
-<h2>Event Statistics</h2>
-<p>Currently Registered Users: {{ registered_users.count }}</p>
-<p>Paid Users: {{ paid_users.count }}</p>
-<p>Unpaid Users: {{ unpaid_users.count }}</p>
+<!-- <h2>Event Statistics</h2> -->
+<!-- <p>Currently Registered Users: {{ registered_users.count }}</p> -->
+<!-- <p>Paid Users: {{ paid_users.count }}</p> -->
+<!-- <p>Unpaid Users: {{ unpaid_users.count }}</p> -->
 
-<h2>Add feedback for Event</h2>
-<form method="post" action="{% url 'event_feedback' event.id %}">
-  {% csrf_token %}
+<!-- <h2>Add feedback for Event</h2> -->
+<!-- <form method="post" action="{% url 'event_feedback' event.id %}"> -->
+  <!-- {% csrf_token %} -->
   <!-- <label for="is_paid">Paid Registration:</label> -->
   <!-- <input type="checkbox" name="is_paid"> -->
-  <input type="submit" value="Add Feedback">
-</form>
+  <!-- <input type="submit" value="Add Feedback"> -->
+<!-- </form> -->
 
 
-<h2>Register for Event</h2>
-<form method="post" action="{% url 'event_registration' event.id %}">
-  {% csrf_token %}
+<!-- <h2>Register for Event</h2> -->
+<!-- <form method="post" action="{% url 'event_registration' event.id %}"> -->
+  <!-- {% csrf_token %} -->
   <!-- <label for="is_paid">Paid Registration:</label> -->
   <!-- <input type="checkbox" name="is_paid"> -->
-  <input type="submit" value="Register">
-</form>
+  <!-- <input type="submit" value="Register"> -->
+<!-- </form> -->
+
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Event Detail</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/event_detail.css' %}">
+</head>
+<body>
+    <div class="event-detail-container">
+        <h1 class="event-title">{{ event.title }}</h1>
+        <div class="event-info">
+            <p class="info-label">Date:</p>
+            <p class="info-value">{{ event.start_date }} - {{ event.end_date }}</p>
+            
+            <p class="info-label">Category:</p>
+            <p class="info-value">{{ event.category }}</p>
+            
+            <p class="info-label">Description:</p>
+            <p class="info-value">{{ event.description }}</p>
+
+            
+            <p class="info-label">Currently Registered Users: </p>
+            <p class="info-value">{{ registered_users.count }}</p>
+
+            <p class="info-label">Paid Users: </p>
+            <p class="info-value">{{ paid_users.count }}</p>
+
+            <p class="info-label">Unpaid Users: </p>
+            <p class="info-value">{{ unpaid_users.count }}</p>
+            
+            
+        </div>
+
+        
+        <div class="registration-form">
+            <h2>Register for this Event</h2>
+            <p><a href="{% url 'event_registration' event.id %}">Register</a></p>
+        </div>
+
+        <div class="registration-form">
+          <h2>Add feedback for this Event</h2>
+          <p><a href="{% url 'event_feedback' event.id %}">Add Feedback</a></p>
+          
+      </div>
+    </div>
+</body>
+</html>
+
